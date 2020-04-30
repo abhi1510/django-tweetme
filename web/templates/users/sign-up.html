@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-5 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form action="" method="POST" novalidate>
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend class="text-center">Join TweetMe</legend>
+                        <hr>
+                        {% for field in form %}
+                        <div class="form-group">
+                            {{ field|as_crispy_field }}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </fieldset>
+                </form>
+                <p class="mt-3 text-center">
+                    <small>Already a member? <a href="/login">Login</a></small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

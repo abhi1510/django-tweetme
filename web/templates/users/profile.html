@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-9 col-lg-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="media tweet">
+                    <img src="{{ profile.avatar.url }}" class="mr-3 profile-img" alt="profile-image">
+                    <div class="media-body">
+                        <h6 class="title">
+                            {{  }}
+                            <span class="ml-2 lead" style="font-size: 0.7rem">${timestamp} ago</span>
+                        </h6>
+                        <div class="text">${content}</div>
+                        <div class="meta">
+                            <span class="mr-4">
+                                <i class="fa fa-comment-o"></i> 3.5K
+                            </span>
+                            <span class="mr-4">
+                                <i class="fa fa-heart-o"></i> 10.8K
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
