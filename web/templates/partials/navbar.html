@@ -21,11 +21,23 @@
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="notificationDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="badge badge-primary notification-label"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ request.user.username }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'explore' request.user.id %}">
+                            <i class="fa fa-eye"></i> Explore
+                        </a>
                         <a class="dropdown-item" href="/profile">
                             <i class="fa fa-user-md"></i> Profile
                         </a>

@@ -1,29 +1,149 @@
 {% extends 'layout.html' %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/users.css' %}">
+{% endblock styles %}
+
 {% block body %}
-<div class="row">
-    <div class="col-sm-12 col-md-9 col-lg-8 mx-auto">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="media tweet">
-                    <img src="{{ profile.avatar.url }}" class="mr-3 profile-img" alt="profile-image">
-                    <div class="media-body">
-                        <h6 class="title">
-                            {{  }}
-                            <span class="ml-2 lead" style="font-size: 0.7rem">${timestamp} ago</span>
-                        </h6>
-                        <div class="text">${content}</div>
-                        <div class="meta">
-                            <span class="mr-4">
-                                <i class="fa fa-comment-o"></i> 3.5K
-                            </span>
-                            <span class="mr-4">
-                                <i class="fa fa-heart-o"></i> 10.8K
-                            </span>
+
+<div class="card-deck">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="media profile">
+                <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'img/profile-default.png' %}{% endif %}"
+                    class="mr-3 profile-img" alt="profile-image">
+                <div class="media-body">
+                    <h3>{{ user.username }}</h3>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            Profile Info
+                        </div>
+                        <div class="card-body py-2">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group row">
+                                    <label for="inputUsername" class="col-sm-4 col-form-label">Username</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" id="inputUsername"
+                                            name="username" value="{{ user.username }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputFirstName" class="col-sm-4 col-form-label">First Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" id="inputFirstName"
+                                            name="first_name" value="{{ user.first_name }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputLastName" class="col-sm-4 col-form-label">Last Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" id="inputLastName"
+                                            name="last_name" value="{{ user.last_name }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail" class="col-sm-4 col-form-label">Email address</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" id="inputEmail"
+                                            name="email" value="{{ user.email }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail" class="col-sm-4 col-form-label"></label>
+                                    <div class="col-sm-8">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Save
+                                            Changes</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="card-header">
+                            Important Dates
+                        </div>
+                        <div class="card-body py-2">
+                            <form>
+                                <div class="form-group row">
+                                    <label for="staticLastLogin" class="col-sm-4 col-form-label">Last Login</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="staticLastLogin"
+                                            value="{{ user.last_login }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="staticDateJoined" class="col-sm-4 col-form-label">Date
+                                        Joined</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" readonly class="form-control-plaintext" id="staticDateJoined"
+                                            value="{{ user.date_joined }}">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" id="followers-tab" data-toggle="tab" href="#followers" role="tab"
+                        aria-controls="followers" aria-selected="true">
+                        Followers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="following-tab" data-toggle="tab" href="#following" role="tab"
+                        aria-controls="following" aria-selected="true">
+                        Following
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane active" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+                    <ul class="list-group">
+                        {% for f in profile.followers.all %}
+                        <li class="list-group-item">
+                            <div class="media">
+                                <img src="{% if f.profile.avatar %}{{ f.profile.avatar.url }}{% else %}{% static 'img/profile-default.png' %}{% endif %}"
+                                    class="mr-2" alt="">
+                                <div class="media-body">
+                                    @{{ f.username }} <br>
+                                    <small>{{ f.first_name }} {{f.last_name}}</small>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline-warning btn-sm">Unfollow</button>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
+                    <ul class="list-group">
+                        {% for p in user.following.all %}
+                        <li class="list-group-item">
+                            <div class="media">
+                                <img src="{% if p.avatar %}{{ p.avatar.url }}{% else %}{% static 'img/profile-default.png' %}{% endif %}"
+                                    class="mr-2" alt="">
+                                <div class="media-body">
+                                    @{{ p.user.username }} <br>
+                                    <small>{{ p.user.first_name }} {{p.user.last_name}}</small>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline-warning btn-sm">Unfollow</button>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

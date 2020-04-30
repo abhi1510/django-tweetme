@@ -3,10 +3,10 @@ const tweetsContainerEl = $('#tweetsContainer');
 const getTweetHtmlStr = (authorImg, author, content, timestamp) => {
     return `<div class="card-body" style="border-bottom: 1px solid rgba(0,0,0,0.125)">
         <div class="media tweet">
-            <img src="${authorImg}" class="mr-3 profile-img" alt="profile-image">
+            
             <div class="media-body">
                 <h6 class="title">
-                    ${author}
+                    @${author}
                     <span class="ml-2 lead" style="font-size: 0.7rem">${timestamp} ago</span>    
                 </h6>
                 <div class="text">${content}</div>
@@ -64,3 +64,19 @@ $('#tweetForm').submit((e) => {
 setTimeout(() => {
     loadTweets();
 }, 2000)
+
+let notificationsCount = 0;
+let notificationsHolderEl = $("[aria-labelledby='notificationDropdown']")
+
+const pushNotification = (text) => {
+    notificationsCount += 1;
+    $('.notification-label').text(notificationsCount);
+    notificationsHolderEl.append(`<div class="dropdown-item">${text}</div>`);
+}
+
+var source = new EventSource("/notifications");
+source.onmessage = function(event) {
+    let msg = event.data;
+    pushNotification(msg);
+    console.log('Received: ', msg);
+};

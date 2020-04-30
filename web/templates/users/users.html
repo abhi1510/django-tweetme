@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/users.css' %}">
+{% endblock styles %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 col-md-9 col-lg-6 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form action="" class="w-75 mx-auto">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" name="q"
+                            placeholder="Search by username..."
+                            aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-outline-primary" type="submit">
+                                <i class="fa fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+                {% if request.GET.q %}
+                <p class="text-center">
+                    Showing results for {{ request.GET.q }} <br>
+                    <a href="/explore/{{current_user.id}}">
+                        <small>Clear</small>
+                    </a>
+                </p>
+                {% endif %}
+                <br>
+                <ul class="list-group">
+                    {% for u in not_following %}
+                    <li class="list-group-item">
+                        <div class="media">
+                            <img src="{% if u.profile.avatar %}{{ u.profile.avatar.url }}{% else %}{% static 'img/profile-default.png' %}{% endif %}"
+                                class="mr-2" alt="">
+                            <div class="media-body">
+                                @{{ u.username }} <br>
+                                <small>{{ u.first_name }} {{ u.last_name }}</small>
+                            </div>
+                            <div>
+                                <form action="{% url 'follow-unfollow' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="follow">
+                                    <input type="hidden" name="who_id" value="{{ current_user.id }}">
+                                    <input type="hidden" name="whom_id" value="{{ u.id }}">
+                                    <input type="hidden" name="_next" value="{% url 'explore' current_user.id %}">
+                                    <button class="btn btn-outline-success btn-sm">follow</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    {% for u in following %}
+                    <li class="list-group-item">
+                        <div class="media">
+                            <img src="{% if u.profile.avatar %}{{ u.profile.avatar.url }}{% else %}{% static 'img/profile-default.png' %}{% endif %}"
+                                class="mr-2" alt="">
+                            <div class="media-body">
+                                @{{ u.username }} <br>
+                                <small>{{ u.first_name }} {{ u.last_name }}</small>
+                            </div>
+                            <div>
+                                <form action="{% url 'follow-unfollow' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="unfollow">
+                                    <input type="hidden" name="who_id" value="{{ current_user.id }}">
+                                    <input type="hidden" name="whom_id" value="{{ u.id }}">
+                                    <input type="hidden" name="_next" value="{% url 'explore' current_user.id %}">
+                                    <button class="btn btn-outline-warning btn-sm">unfollow</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

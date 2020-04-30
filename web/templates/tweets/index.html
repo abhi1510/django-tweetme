@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% load static %}
+
 {% block body %}
 
 <div class="row mb-2">
@@ -44,3 +46,7 @@
 </div>
 </div>
 {% endblock body %}
+
+{% block scripts %}
+<script src="{% static 'js/tweet.js' %}"></script>
+{% endblock scripts %}

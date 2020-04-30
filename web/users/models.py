@@ -8,7 +8,10 @@ User = settings.AUTH_USER_MODEL
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    avatar = models.ImageField(upload_to='media/users', null=True, blank=True)
+    avatar = models.ImageField(upload_to='users', null=True, blank=True)
+    location = models.CharField(max_length=250, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    followers = models.ManyToManyField(User, blank=True, related_name='following')
 
     def __str__(self):
         return f'{self.user} profile' 
