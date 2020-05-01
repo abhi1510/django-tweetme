@@ -7,7 +7,7 @@ from django.dispatch import receiver
 User = settings.AUTH_USER_MODEL
 
 class Tweet(models.Model):
-    content = models.CharField(max_length=150)
+    content = models.CharField(max_length=500)
     image = models.FileField(upload_to='tweets', null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
