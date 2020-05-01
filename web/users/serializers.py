@@ -13,4 +13,4 @@ class UserSerializer(serializers.ModelSerializer):
         avatar = obj.profile.avatar
         if avatar:
             return avatar.url
-        return None
+        return '/static/img/profile-default.png'

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -9,7 +10,7 @@ class Tweet(models.Model):
     content = models.CharField(max_length=150)
     image = models.FileField(upload_to='tweets', null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ('-timestamp',)
