@@ -12,6 +12,13 @@ A twitter like application created using Django
 
 ### Instructions:
 
+Create virtual env and install requirements
+
+```
+python -m venv <your-env-name>
+pip install -r requirements.txt
+```
+
 Create migrations and dump users
 
 ```
