@@ -3,10 +3,11 @@ A twitter like application created using Django
 
 ### Highlights:
 
-* Tweet - CRUD
-* Followers and Following
-* Search for any user
+* Tweet - CRUD.
+* Followers and Following.
+* Search for any user.
 * Notifications using SSE on post liked.
+* Dump initial data using custom commands and fixtures.
 
 
 ### Instructions:
